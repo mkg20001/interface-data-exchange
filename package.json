@@ -25,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/mkg20001/interface-data-exchange/issues"
   },
-  "homepage": "https://github.com/mkg20001/interface-data-exchange#readme"
+  "homepage": "https://github.com/mkg20001/interface-data-exchange#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "interface-data-exchange-devdeps": "0.0.1"
+  }
 }
