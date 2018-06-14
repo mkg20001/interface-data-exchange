@@ -17,5 +17,13 @@
     "handshake"
   ],
   "author": "Maciej Krüger <mkg20001@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkg20001/interface-data-exchange.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mkg20001/interface-data-exchange/issues"
+  },
+  "homepage": "https://github.com/mkg20001/interface-data-exchange#readme"
 }
