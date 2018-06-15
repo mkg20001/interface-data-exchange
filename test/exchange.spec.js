@@ -6,7 +6,8 @@ tests({
   opt: {},
   before: (eA, eB, eM, cb) => {
     let link = {}
-    Array(eA, eB, eM).forEach(e => {
+    let e = [eA, eB, eM]
+    e.forEach(e => {
       link[e.swarm.peerInfo.id.toB58String()] = e
       e.link = link
     })
