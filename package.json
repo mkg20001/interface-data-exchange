@@ -1,6 +1,6 @@
 {
   "name": "interface-data-exchange",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An Interface to exchange a single request/response with another peer (ex handshake for webrtc)",
   "main": "src/index.js",
   "browser": {
