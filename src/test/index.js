@@ -53,7 +53,7 @@ module.exports = (common) => {
       let num = 24
       exchangeB.request(peerA.peerInfo.id, 'test', Buffer.from(String(num)), (err, result) => {
         expect(err).to.not.exist()
-        expect(result).to.equal(Buffer.from(String(num * 10)))
+        expect(String(result)).to.equal(String(num * 10))
       })
     })
 
