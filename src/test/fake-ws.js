@@ -6,6 +6,7 @@ const Connection = require('interface-connection').Connection
 const includes = require('lodash.includes')
 const EE = require('events').EventEmitter
 const duplex = require('pull-pair/duplex')
+const noop = () => {}
 
 const debug = require('debug')
 const log = debug('libp2p:websockets:fake')
@@ -27,11 +28,9 @@ class WebSockets {
 
     const conn = new Connection(pair[0])
     conn.getObservedAddrs = (cb) => cb(null, [ma])
-    conn.close = (cb) => socket.close(cb)
 
     const conn2 = new Connection(pair[1])
     conn2.getObservedAddrs = (cb) => cb(null, [])
-    conn2.close = (cb) => socket.close(cb)
 
     EX[ma.decapsulate('ipfs').toString()].emit('connection', conn2)
 
@@ -54,7 +53,6 @@ class WebSockets {
     listener.listen = (ma, callback) => {
       callback = callback || noop
       listeningMultiaddr = ma
-
 
       if (includes(ma.protoNames(), 'ipfs')) {
         ma = ma.decapsulate('ipfs')

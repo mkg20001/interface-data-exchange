@@ -31,6 +31,6 @@
   "homepage": "https://github.com/mkg20001/interface-data-exchange#readme",
   "dependencies": {},
   "devDependencies": {
-    "interface-data-exchange-devdeps": "0.0.1"
+    "interface-data-exchange-devdeps": "~0.0.1"
   }
 }
