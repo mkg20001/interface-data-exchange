@@ -11,6 +11,8 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
+const num = 24
+
 module.exports = (common) => {
   describe('interface-discovery', () => {
     let peerA
@@ -49,11 +51,12 @@ module.exports = (common) => {
       })
     })
 
-    it('request "test" b->a should succeed', () => {
-      let num = 24
+    it('request "test" b->a should succeed', (done) => {
       exchangeB.request(peerA.peerInfo.id, 'test', Buffer.from(String(num)), (err, result) => {
         expect(err).to.not.exist()
         expect(String(result)).to.equal(String(num * 10))
+
+        done()
       })
     })
 
@@ -61,19 +64,30 @@ module.exports = (common) => {
       exchangeA.unhandle('test')
     })
 
-    it('request "test" b->a should fail', () => {
-      let num = 24
+    it('request "test" b->a should fail', (done) => {
       exchangeB.request(peerA.peerInfo.id, 'test', Buffer.from(String(num)), (err, result) => {
         expect(err).to.exist()
         expect(result).to.not.exist()
+
+        done()
       })
     })
 
-    it('request to non-existent peer should fail', () => {
-      let num = 24
+    it('request to non-existent peer should fail', (done) => {
       exchangeB.request(peerE.id, 'test', Buffer.from(String(num)), (err, result) => {
         expect(err).to.exist()
         expect(result).to.not.exist()
+
+        done()
+      })
+    })
+
+    after(async () => {
+      await new Promise((resolve, reject) => {
+        waterfall([
+          cb => parallel([exchangeA, exchangeB, exchangeM].map(e => cb => e.stop(cb)), e => cb(e)),
+          cb => parallel([peerA, peerB, peerM].map(p => cb => p.stop(cb)), e => cb(e))
+        ], e => e ? reject(e) : resolve())
       })
     })
   })
