@@ -13,6 +13,8 @@ const log = debug('libp2p:websockets:fake')
 
 const EX = global.FAKE_WS_EX = global.FAKE_WS_EX || {}
 
+// TODO: new transport interface
+
 class WebSockets {
   dial (ma, options, callback) {
     if (typeof options === 'function') {
