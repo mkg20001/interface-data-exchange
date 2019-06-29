@@ -7,8 +7,8 @@ class FakeExchange extends ExchangeBase {
     return super(swarm, 'fake-exchange')
   }
 
-  request (peerId, ns, data) {
-    const res = (this.link[peerId.toB58String()] || {_handle: (a, b, c, cb) => cb(null, {nack: true})})._handle(ns, peerId, data)
+  async request (peerId, ns, data) {
+    const res = await ((this.link[peerId.toB58String()] || {_handle: (a, b, c) => { return { nack: true } }})._handle(ns, peerId, data))
 
     if (res) {
       if (res.nack) {
