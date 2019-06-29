@@ -34,14 +34,15 @@ module.exports = (common) => {
       exchangeB = new common.Exchange(peerB, common.opt.exchangeB)
       exchangeM = new common.Exchange(peerM, common.opt.exchangeM)
 
-      await new Promise((resolve, reject) => {
+      await new Promise((resolve, reject) => { // TODO: hope we can get rid of this soon
         waterfall([
-          cb => parallel([peerA, peerB, peerM].map(p => cb => p.start(cb)), e => cb(e)),
-          cb => parallel([exchangeA, exchangeB, exchangeM].map(e => cb => e.start(cb)), e => cb(e))
+          cb => parallel([peerA, peerB, peerM].map(p => cb => p.start(cb)), e => cb(e))
         ], e => e ? reject(e) : resolve())
       })
 
-      await promisify((cb) => common.before(exchangeA, exchangeB, exchangeM, cb))() // things like connecting to peerB get done here
+      await Promise.all([exchangeA, exchangeB, exchangeM].map(e => e.start()))
+
+      await common.before(exchangeA, exchangeB, exchangeM) // things like connecting to peerB get done here
     })
 
     it('create handler for "test" on peer a', () => {
@@ -79,9 +80,10 @@ module.exports = (common) => {
     })
 
     after(async () => {
+      await Promise.all([exchangeA, exchangeB, exchangeM].map(e => e.stop()))
+
       await new Promise((resolve, reject) => {
         waterfall([
-          cb => parallel([exchangeA, exchangeB, exchangeM].map(e => cb => e.stop(cb)), e => cb(e)),
           cb => parallel([peerA, peerB, peerM].map(p => cb => p.stop(cb)), e => cb(e))
         ], e => e ? reject(e) : resolve())
       })

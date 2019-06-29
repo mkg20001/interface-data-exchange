@@ -3,6 +3,10 @@
 const ExchangeBase = require('../src')
 
 class FakeExchange extends ExchangeBase {
+  constructor (swarm) {
+    return super(swarm, 'fake-exchange')
+  }
+
   request (peerId, ns, data) {
     const res = (this.link[peerId.toB58String()] || {_handle: (a, b, c, cb) => cb(null, {nack: true})})._handle(ns, peerId, data)
 

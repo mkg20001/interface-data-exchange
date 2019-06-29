@@ -19,7 +19,7 @@ class ExchangeBase {
     delete this.handlers[ns]
   }
 
-  async _handle (ns, from, data, cb) {
+  async _handle (ns, from, data) {
     const handler = this.handlers[ns]
 
     if (!handler) { // if we don't have a handler send NACK
