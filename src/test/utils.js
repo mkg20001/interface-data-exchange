@@ -1,7 +1,6 @@
 'use strict'
 
 const ids = require('./ids.json')
-const promisify = require('promisify-es6')
 const Id = require('peer-id')
 const Peer = require('peer-info')
 
@@ -11,7 +10,7 @@ const MPLEX = require('libp2p-mplex')
 const SECIO = require('libp2p-secio')
 
 const createPeerInfo = async (id) => {
-  return new Peer(await promisify(Id.createFromJSON.bind(Id, ids[id]))())
+  return new Peer(await Id.createFromJSON(ids[id]))
 }
 
 const createPeer = async (id, opt) => {

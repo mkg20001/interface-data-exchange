@@ -63,7 +63,7 @@ module.exports = (common) => {
 
     it('request "test" b->a should fail', async () => {
       try {
-        const result = exchangeB.request(peerA.peerInfo.id, 'test', Buffer.from(String(num)))
+        const result = await exchangeB.request(peerA.peerInfo.id, 'test', Buffer.from(String(num)))
         expect(result).to.not.exist()
       } catch (err) {
         expect(err).to.exist()
@@ -72,7 +72,7 @@ module.exports = (common) => {
 
     it('request to non-existent peer should fail', async () => {
       try {
-        const result = exchangeB.request(peerE.id, 'test', Buffer.from(String(num)))
+        const result = await exchangeB.request(peerE.id, 'test', Buffer.from(String(num)))
         expect(result).to.not.exist()
       } catch (err) {
         expect(err).to.exist()
