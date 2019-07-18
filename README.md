@@ -49,9 +49,8 @@ tests({
       }
     }
   },
-  before: (eA, eB, eM, cb) => {
+  before: async (eA, eB, eM) => {
     /* run actions such as connecting peers with each other */
-    cb()
   },
   Exchange: require('../src') // include the exchange itself here
 })
@@ -69,9 +68,9 @@ A valid (read: that follows the interface defined) exchange, must implement the 
 
 - type: `Exchange`
   - `new Exchange(swarm, [options])`
-  - `exchange.request(id, ns, requestData, [options], callback)`
-  - `exchange.handle(ns, handlerFunction)`
-  - `exchange.unhandle(ns, handlerFunction)`
-  - `exchange.start(callback)`
-  - `exchange.stop(callback)`
+  - `async exchange.request(id, ns, requestData, [options])`
+  - `exchange.handle(ns, asyncHandlerFunction)`
+  - `exchange.unhandle(ns, asyncHandlerFunction)`
+  - `async exchange.start()`
+  - `async exchange.stop()`
 
