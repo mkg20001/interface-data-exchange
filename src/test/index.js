@@ -34,58 +34,56 @@ module.exports = (common) => {
       exchangeB = new common.Exchange(peerB, common.opt.exchangeB)
       exchangeM = new common.Exchange(peerM, common.opt.exchangeM)
 
-      await new Promise((resolve, reject) => {
+      await new Promise((resolve, reject) => { // TODO: hope we can get rid of this soon
         waterfall([
-          cb => parallel([peerA, peerB, peerM].map(p => cb => p.start(cb)), e => cb(e)),
-          cb => parallel([exchangeA, exchangeB, exchangeM].map(e => cb => e.start(cb)), e => cb(e))
+          cb => parallel([peerA, peerB, peerM].map(p => cb => p.start(cb)), e => cb(e))
         ], e => e ? reject(e) : resolve())
       })
 
-      await promisify((cb) => common.before(exchangeA, exchangeB, exchangeM, cb))() // things like connecting to peerB get done here
+      await Promise.all([exchangeA, exchangeB, exchangeM].map(e => e.start()))
+
+      await common.before(exchangeA, exchangeB, exchangeM) // things like connecting to peerB get done here
     })
 
     it('create handler for "test" on peer a', () => {
-      exchangeA.handle('test', (id, data, cb) => {
+      exchangeA.handle('test', async (id, data) => {
         data = parseInt(String(data), 10)
-        cb(null, Buffer.from(String(data * 10)))
+        return Buffer.from(String(data * 10))
       })
     })
 
-    it('request "test" b->a should succeed', (done) => {
-      exchangeB.request(peerA.peerInfo.id, 'test', Buffer.from(String(num)), (err, result) => {
-        expect(err).to.not.exist()
-        expect(String(result)).to.equal(String(num * 10))
-
-        done()
-      })
+    it('request "test" b->a should succeed', async () => {
+      const result = await exchangeB.request(peerA.peerInfo.id, 'test', Buffer.from(String(num)))
+      expect(String(result)).to.equal(String(num * 10))
     })
 
     it('remove handler for "test" on peer a', () => {
       exchangeA.unhandle('test')
     })
 
-    it('request "test" b->a should fail', (done) => {
-      exchangeB.request(peerA.peerInfo.id, 'test', Buffer.from(String(num)), (err, result) => {
-        expect(err).to.exist()
+    it('request "test" b->a should fail', async () => {
+      try {
+        const result = await exchangeB.request(peerA.peerInfo.id, 'test', Buffer.from(String(num)))
         expect(result).to.not.exist()
-
-        done()
-      })
+      } catch (err) {
+        expect(err).to.exist()
+      }
     })
 
-    it('request to non-existent peer should fail', (done) => {
-      exchangeB.request(peerE.id, 'test', Buffer.from(String(num)), (err, result) => {
-        expect(err).to.exist()
+    it('request to non-existent peer should fail', async () => {
+      try {
+        const result = await exchangeB.request(peerE.id, 'test', Buffer.from(String(num)))
         expect(result).to.not.exist()
-
-        done()
-      })
+      } catch (err) {
+        expect(err).to.exist()
+      }
     })
 
     after(async () => {
+      await Promise.all([exchangeA, exchangeB, exchangeM].map(e => e.stop()))
+
       await new Promise((resolve, reject) => {
         waterfall([
-          cb => parallel([exchangeA, exchangeB, exchangeM].map(e => cb => e.stop(cb)), e => cb(e)),
           cb => parallel([peerA, peerB, peerM].map(p => cb => p.stop(cb)), e => cb(e))
         ], e => e ? reject(e) : resolve())
       })
