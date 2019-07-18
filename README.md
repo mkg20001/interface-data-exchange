@@ -3,7 +3,7 @@ interface-data-exchange
 
 [![](https://img.shields.io/badge/made%20by-mkg20001-blue.svg?style=flat-square)](https://github.com/mkg20001)
 
-> A test suite and interface you can use to implement a libp2p data-exchange. A libp2p data-exchange is understood as something that offers an encrypted way to exchange a single request/response in order to establish a connection over a transport such as WebRTC.
+> A test suite and interface you can use to implement a libp2p data-exchange. A libp2p data-exchange is understood as something that offers an encrypted way to exchange a single request/response in order to establish a connection over a signalling-based transport such as WebRTC.
 
 # Why?
 
