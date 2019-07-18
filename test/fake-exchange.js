@@ -4,11 +4,11 @@ const ExchangeBase = require('../src')
 
 class FakeExchange extends ExchangeBase {
   constructor (swarm) {
-    return super(swarm, 'fake-exchange')
+    return super(swarm, 'fake-exchange') // eslint-disable-line
   }
 
   async request (peerId, ns, data) {
-    const res = await ((this.link[peerId.toB58String()] || {_handle: (a, b, c) => { return { nack: true } }})._handle(ns, peerId, data))
+    const res = await ((this.link[peerId.toB58String()] || { _handle: (a, b, c) => { return { nack: true } } })._handle(ns, peerId, data))
 
     if (res) {
       if (res.nack) {

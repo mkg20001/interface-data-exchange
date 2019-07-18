@@ -24,15 +24,15 @@ class ExchangeBase {
 
     if (!handler) { // if we don't have a handler send NACK
       this.log('NACK %s from %s, reason: no handler', ns, from)
-      return {nack: true}
+      return { nack: true }
     }
 
     try {
       const result = await handler(from, data)
-      return {result}
+      return { result }
     } catch (err) {
       this.log('NACK %s from %s, reason: error %s', ns, from, err)
-      return {nack: true}
+      return { nack: true }
     }
   }
 }

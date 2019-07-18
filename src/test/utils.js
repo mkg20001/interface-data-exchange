@@ -14,7 +14,7 @@ const createPeerInfo = async (id) => {
 }
 
 const createPeer = async (id, opt) => {
-  let peer = await createPeerInfo(id)
+  const peer = await createPeerInfo(id)
   if (!opt) opt = {}
   if (!opt.addrs) opt.addrs = []
   opt.addrs.forEach(a => peer.multiaddrs.add(a))

@@ -26,7 +26,7 @@ class WebSockets {
 
     log('dialing %s', ma)
 
-    let pair = duplex()
+    const pair = duplex()
 
     const conn = new Connection(pair[0])
     conn.getObservedAddrs = (cb) => cb(null, [ma])

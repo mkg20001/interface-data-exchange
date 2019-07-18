@@ -3,8 +3,7 @@
 /* eslint-env mocha */
 
 const Utils = require('./utils')
-const promisify = require('promisify-es6')
-const {parallel, waterfall} = require('async')
+const { parallel, waterfall } = require('async')
 
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
@@ -46,7 +45,7 @@ module.exports = (common) => {
     })
 
     it('create handler for "test" on peer a', () => {
-      exchangeA.handle('test', async (id, data) => {
+      exchangeA.handle('test', (id, data) => {
         data = parseInt(String(data), 10)
         return Buffer.from(String(data * 10))
       })
