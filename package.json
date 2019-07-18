@@ -29,7 +29,9 @@
     "url": "https://github.com/mkg20001/interface-data-exchange/issues"
   },
   "homepage": "https://github.com/mkg20001/interface-data-exchange#readme",
-  "dependencies": {},
+  "dependencies": {
+    "lodash.includes": "^4.3.0"
+  },
   "devDependencies": {
     "aegir": "^20.0.0",
     "interface-data-exchange-devdeps": "0.1.2"
